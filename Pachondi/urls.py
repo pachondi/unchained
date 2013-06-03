@@ -5,6 +5,9 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+                       (r'^groups/$','groups.views.list'),
+                       (r'^groups/new','groups.views.new'),  #to create a group
+                       (r'^groups/add/','groups.views.add')
     # Examples:
     # url(r'^$', 'Pachondi.views.home', name='home'),
     # url(r'^Pachondi/', include('Pachondi.foo.urls')),

@@ -1,0 +1,7 @@
+<form action='/groups/{{action}}/' method='post'>
+	Group Name:
+	<input name='group_name' value="{{Group.group_name|escape}}" />
+	Description:
+	<input name='group_description' value="{{Group.group_description|escape}}" />
+	<input type="submit" value="{{button}}" >
+</form>
