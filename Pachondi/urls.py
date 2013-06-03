@@ -5,9 +5,13 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-                       (r'^groups/$','groups.views.list'),
-                       (r'^groups/new','groups.views.new'),  #to create a group
-                       (r'^groups/add/','groups.views.add')
+                       (r'^groups/$','groups.views.list_groups'),
+                       (r'^groups/new$','groups.views.new'),  # to create a group
+                       (r'^groups/add/$','groups.views.add'),  # post after create
+                       (r'^groups/(?P<group_id>\d+)','groups.views.show'),
+                       (r'^groups/edit/(?P<group_id>\d+)','groups.views.edit'), # to choose a group to edit
+                       (r'^groups/update/(?P<group_id>\d+)','groups.views.update'), # to handle after form is posted for edit
+                       (r'^groups/delete/(?P<group_id>\d+)','groups.views.delete'),
     # Examples:
     # url(r'^$', 'Pachondi.views.home', name='home'),
     # url(r'^Pachondi/', include('Pachondi.foo.urls')),

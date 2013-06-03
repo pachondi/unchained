@@ -3,5 +3,7 @@
 	<input name='group_name' value="{{Group.group_name|escape}}" />
 	Description:
 	<input name='group_description' value="{{Group.group_description|escape}}" />
+	{% if action %}
 	<input type="submit" value="{{button}}" >
+	{% endif %}
 </form>
