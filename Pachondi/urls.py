@@ -8,11 +8,15 @@ urlpatterns = patterns('groups.views',
                        (r'^groups/$','index'), # show all group
                        (r'^groups/new$','new'),  # to create a group
                        (r'^groups/create/$','create'),  # post after create
+                       (r'^groups/(?P<group_id>\d+)/edit','edit'), # to edit a group
+                       #(r'^groups/edit/(?P<group_id>\d+)','edit'), # to edit a group
+                       (r'^groups/(?P<group_id>\d+)/update','update'), # post after edit
+                       #(r'^groups/update/(?P<group_id>\d+)','update'), # post after edit
+                       (r'^groups/(?P<group_id>\d+)/delete','delete'), # to delete a group
+                       #(r'^groups/delete/(?P<group_id>\d+)','delete'), # to delete a group
+                       (r'^groups/(?P<group_id>\d+)/destroy','destroy'), # to post after delete
+                       #(r'^groups/destroy/(?P<group_id>\d+)','destroy'), # to post after delete
                        (r'^groups/(?P<group_id>\d+)','show'),
-                       (r'^groups/edit/(?P<group_id>\d+)','edit'), # to edit a group
-                       (r'^groups/update/(?P<group_id>\d+)','update'), # post after edit
-                       (r'^groups/delete/(?P<group_id>\d+)','delete'), # to delete a group
-                       (r'^groups/destroy/(?P<group_id>\d+)','destroy'), # to post after delete
                        #(r'^groups*','index'), # catch all, defaults to index
     # Examples:
     # url(r'^$', 'Pachondi.views.home', name='home'),

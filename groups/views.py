@@ -55,7 +55,7 @@ def edit(request,group_id):
     return render_to_response(
                'groups/form.html',                
                {
-                'action':'update/' + group_id,
+                'action':group_id + '/update',
                 'button':'Update',
                 'Group':group
                 }                   
@@ -63,6 +63,7 @@ def edit(request,group_id):
 
 #PUT /groups/:id
 def update(request,group_id):
+
     group = Group.objects.get(id=group_id)
     group.group_name = request.POST["group_name"]
     group.group_description = request.POST["group_description"]
@@ -77,7 +78,7 @@ def delete(request,group_id):
     return render_to_response(
                'groups/form.html',                
                {
-                'action':'destroy/' + group_id,
+                'action':group_id+'/destroy',
                 'button':'Delete',
                 'Group':group
                 }                   
