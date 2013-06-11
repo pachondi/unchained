@@ -1,0 +1,10 @@
+ 
+<form action='/discussions/{{action}}/' method='post'>
+	Discussion Name:
+	<input name='name' value="{{GroupDiscussion.name|escape}}" />
+	Discussion belongs to group id:
+	<input name='group' value="{{GroupDiscussion.group.id|escape}}" />
+	{% if action %}
+	<input type="submit" value="{{button}}" >
+	{% endif %}
+</form>

@@ -1,6 +1,8 @@
 <body>
 
 <br/>
-{% object.get_detail_fields %}
+{% with group_fields=object.get_detail_fields %}
+ {{ group_fields }}
+{% endwith %}
 </body>
 

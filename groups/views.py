@@ -14,7 +14,7 @@ def index(request, message=""):
     )
 
 
-
+# GET /groups/:id
 class GroupDetail(DetailView):
 # This is a class based generic view to display one group    
     model = Group # Set the model as Group
@@ -48,11 +48,11 @@ def create(request):
     if request.method != "POST":
         return redirect('groups.views.new')
     
-    group_name = request.POST["group_name"]
-    group_description = request.POST["group_description"]
+    group_name = request.POST["name"]
+    group_description = request.POST["description"]
     group = Group(
-                 group_name = group_name,
-                 group_description = group_description      
+                 name = group_name,
+                 description = group_description      
             )
     group.save()
     return index(request,"Group Created")
@@ -73,8 +73,8 @@ def edit(request,group_id):
 def update(request,group_id):
 
     group = Group.objects.get(id=group_id)
-    group.group_name = request.POST["group_name"]
-    group.group_description = request.POST["group_description"]
+    group.name = request.POST["name"]
+    group.description = request.POST["description"]
     group.save()
     return index(request,message="Group " + group.group_name + " Updated.")   
     #html = "<html><body>Testing</body></html>"
@@ -98,7 +98,7 @@ def destroy(request,group_id):
     if request.method != "POST":
         return redirect('groups.views.index')
 
-    group_name = request.POST["group_name"]
+    group_name = request.POST["name"]
     Group.objects.get(id=group_id).delete()
     return index(request,message="Group " + group_name + " Deleted.")
 

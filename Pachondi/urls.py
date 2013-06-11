@@ -18,8 +18,17 @@ urlpatterns = patterns('groups.views',
                        (r'^groups/(?P<group_id>\d+)/destroy','destroy'), # to post after delete
                        #(r'^groups/destroy/(?P<group_id>\d+)','destroy'), # to post after delete
                        #(r'^groups/(?P<group_id>\d+)','show'),
-                       (r'^groups/(?P<pk>\d+)',GroupDetail.as_view()),
-                       #(r'^groups*','index'), # catch all, defaults to index
+                       (r'^groups/(?P<pk>\d+)',GroupDetail.as_view())
+)
+
+urlpatterns += patterns('discussions.views',
+                        (r'discussions$','index'),
+                        (r'discussions/new$','new'),
+                        (r'discussions/create/$','create'),
+                        (r'discussions/(?P<pk>\d+)','show'),
+)
+
+#(r'^groups*','index'), # catch all, defaults to index
     # Examples:
     # url(r'^$', 'Pachondi.views.home', name='home'),
     # url(r'^Pachondi/', include('Pachondi.foo.urls')),
@@ -29,4 +38,4 @@ urlpatterns = patterns('groups.views',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-)
+
