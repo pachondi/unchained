@@ -1,6 +1,7 @@
 # Create your views here.
 from groups.models import Group
 # from django.template import Context, loader
+from django.views.generic import DetailView
 from django.shortcuts import render_to_response, redirect
 #from django.http import HttpResponse
 
@@ -11,6 +12,13 @@ def index(request, message=""):
         'groups/list.html',
         {'group_list':group_list,'message':message}
     )
+
+
+
+class GroupDetail(DetailView):
+# This is a class based generic view to display one group    
+    model = Group # Set the model as Group
+    
 
 # GET /groups/:id
 def show(request, group_id, message=""):
