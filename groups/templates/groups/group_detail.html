@@ -1,8 +1,11 @@
 <body>
-
+{% with object=None %}
+{% endwith %}
 <br/>
 {% with group_fields=object.get_detail_fields %}
- {{ group_fields }}
+ {% for k,v in group_fields.items %} 
+ {{ k }}: {{ v }},
+ {% endfor %}
 {% endwith %}
 
 <!--
@@ -15,7 +18,16 @@ Discussions:
 Discussions directly from Model:
 <br/>
 {% with group_discussion_lister=object.get_group_discussions %}
-{{ group_discussion_lister }}
+{% for discussionid,discussionobj in group_discussion_lister %} 
+{{ discussionid }},{{ discussionobj.name }}
+<br/>
+{% endfor %}
+Discussions through ORM:
+<br/>
+{% for discussion in object.groupdiscussion_set.all %}
+{{ discussion.id }},{{ discussion.name }}
+<br/>
+{% endfor %}
 {% endwith %}
 	
 </body>
