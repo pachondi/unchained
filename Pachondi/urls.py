@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from groups.views import GroupDetail
+from groups.views import GroupDetailView
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -18,7 +18,7 @@ urlpatterns = patterns('groups.views',
                        (r'^groups/(?P<group_id>\d+)/destroy','destroy'), # to post after delete
                        #(r'^groups/destroy/(?P<group_id>\d+)','destroy'), # to post after delete
                        #(r'^groups/(?P<group_id>\d+)','show'),
-                       (r'^groups/(?P<pk>\d+)',GroupDetail.as_view())
+                       (r'^groups/(?P<pk>\d+)',GroupDetailView.as_view())
 )
 
 urlpatterns += patterns('discussions.views',

@@ -1,9 +1,16 @@
 # Create your views here.
+
+import logging
+
 from groups.models import Group
+from discussions.models import GroupDiscussion
 # from django.template import Context, loader
 from django.views.generic import DetailView
 from django.shortcuts import render_to_response, redirect
 #from django.http import HttpResponse
+
+# get a logging instance
+logger = logging.getLogger(__name__)
 
 # GET /groups
 def index(request, message=""):
@@ -15,11 +22,47 @@ def index(request, message=""):
 
 
 # GET /groups/:id
-class GroupDetail(DetailView):
+class GroupDetailView(DetailView):
 # This is a class based generic view to display one group    
     model = Group # Set the model as Group
     
-
+    """
+    Override context to pass additional information to template
+    apart from group information. If we don't override, template
+    gets on Group object information. Extra contexts passed are
+    1. Related discussions on this group.
+    """ 
+    def get_context_data(self, **kwargs):
+        """
+        kwargs contains one key 'object' that holds the group
+        object. Which means at this level we can get whatever
+        we want. Available methods in object:
+        ['DoesNotExist', 'MultipleObjectsReturned', '__class__', '__delattr__', 
+         '__dict__', '__doc__', '__eq__', '__format__', '__getattribute__', 
+         '__hash__', '__init__', '__metaclass__', '__module__', '__ne__', 
+         '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', 
+         '__sizeof__', '__str__', '__subclasshook__', '__unicode__', '__weakref__', 
+         '_base_manager', '_default_manager', '_deferred', '_get_FIELD_display', 
+         '_get_next_or_previous_by_FIELD', '_get_next_or_previous_in_order', 
+         '_get_pk_val', '_get_unique_checks', '_meta', '_perform_date_checks', 
+         '_perform_unique_checks', '_set_pk_val', '_state', 'clean', 'clean_fields', 
+         'date_error_message', 'delete', 'description', 'full_clean', 
+         'get_detail_fields', 'groupdiscussion_set',  'id', 'is_active', 'name', 
+         'objects', 'pk', 'prepare_database_save', 'save', 'save_base', 
+         'serializable_value', 'unique_error_message', 'validate_unique'
+         ]
+        """
+        context = super(GroupDetailView,self).get_context_data(**kwargs)
+        """
+        Now this is one way to do it. But we don't want any 
+        processing logic in the views. So get_group_discussions
+        in the Group Model will handle data processing.
+        # context["group_discussions_list"] =  GroupDiscussion.objects.filter(group__id__exact = "1")
+        """
+        # print(dir(kwargs.get('object')))
+        #assert False
+        return context
+    
 # GET /groups/:id
 def show(request, group_id, message=""):
     group = Group.objects.get(id=group_id)

@@ -4,5 +4,19 @@
 {% with group_fields=object.get_detail_fields %}
  {{ group_fields }}
 {% endwith %}
+
+<!--
+<br/>
+Discussions:
+<br/>
+{{ group_discussions_list }}
+-->
+<br/>
+Discussions directly from Model:
+<br/>
+{% with group_discussion_lister=object.get_group_discussions %}
+{{ group_discussion_lister }}
+{% endwith %}
+	
 </body>
 
