@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 <body>
 {% with object=None %}
 {% endwith %}
@@ -27,8 +29,19 @@ Discussions through ORM:
 {% for discussion in object.groupdiscussion_set.all %}
 {{ discussion.id }},{{ discussion.name }}
 <br/>
+Messages:<br/>
+
+{% for v in  discussion.groupdiscussionmessage_set.all %}
+{{ v.id }},{{ v.raw_message }},{{ v.group_discussion }}<br/>
+{% endfor %}
+
+
+<a href='{% url new-group-discussion-message %}?link_pk={{discussion.id}}' >Post a message</a><br/>
 {% endfor %}
 {% endwith %}
+
+<a href='{% url new-group-discussion %}?link_pk={{object.id}}' >Create Discussion</a>
+	
 	
 </body>
 

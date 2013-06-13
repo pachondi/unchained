@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     # All user created apps
     'groups',
     'discussions',
+    'messages',
     # South for database migrations
     'south',
     # Uncomment the next line to enable the admin:

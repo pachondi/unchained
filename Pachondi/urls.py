@@ -22,11 +22,20 @@ urlpatterns = patterns('groups.views',
 )
 
 urlpatterns += patterns('discussions.views',
-                        (r'discussions$','index'),
-                        (r'discussions/new$','new'),
-                        (r'discussions/create/$','create'),
-                        (r'discussions/(?P<pk>\d+)','show'),
+                        (r'group_discussions$','index'),
+                        (r'group_discussions/new$','new',None,'new-group-discussion'),
+                        (r'group_discussions/create/$','create'),
+                        #(r'group_discussions/(?P<pk>\d+)','show'),
 )
+
+
+urlpatterns += patterns('messages.views',
+                        (r'group_discussion_messages/$','index'),
+                        (r'group_discussion_messages/new$','new',None,'new-group-discussion-message'),
+                        (r'group_discussion_messages/create/$','create'),
+                        #(r'group_discussions/(?P<pk>\d+)','show'),
+)
+
 
 #(r'^groups*','index'), # catch all, defaults to index
     # Examples:

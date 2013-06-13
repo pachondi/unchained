@@ -1,0 +1,15 @@
+ {% if link_pk %}
+ 	This Discussion Message belongs to a {% firstof belongs_to "Discussion" %}, whose primary key is {{ link_pk|escape }} <br/> 
+ {% else %}
+ 	This Discussion Message is an orphan.
+ {% endif %}		
+ 
+<form action='/group_discussion_messages/{{action}}/' method='post'>
+	Discussion Text:
+	<input name='raw_message' value="" />
+	Message belongs to Group Discussion {% firstof link_pk|escape None %}:
+	<input name='link_pk' value="{{ link_pk|escape }}" />
+	{% if action %}
+	<input type="submit" value="{{button}}" >
+	{% endif %}
+</form>

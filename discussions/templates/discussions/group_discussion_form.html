@@ -1,0 +1,16 @@
+  
+ {% if link_pk %}
+ 	This Discussion belongs to a {% firstof belongs_to "Group" %}, whose primary key is {{ link_pk|escape }} <br/> 
+ {% else %}
+ 	This Discussion is an orphan.
+ {% endif %}		
+ 
+<form action='/group_discussions/{{action}}/' method='post'>
+	Discussion Name:
+	<input name='name' value="" />
+	Discussion belongs to Group {% firstof link_pk|escape None %}:
+	<input name='link_pk' value="{{ link_pk|escape }}" />
+	{% if action %}
+	<input type="submit" value="{{button}}" >
+	{% endif %}
+</form>

@@ -16,10 +16,11 @@ def index(request, message=""):
 # GET /discussions/new
 def new(request):
     return render_to_response(
-        'discussions/form.html',
+        'discussions/group_discussion_form.html',
         {
          'action':'create',
-         'button':'Create'
+         'button':'Create',
+         'link_pk':request.GET.get('link_pk')
         }
     )
 
@@ -29,11 +30,14 @@ def create(request):
     if request.method != "POST":
         return redirect('discussions.views.new')
     
+    if not request.POST.get("link_pk"):
+        return redirect('discussions.views.new')
+
+    params = {}
     name = request.POST["name"]
-    group = Group.objects.get(id=request.POST["group"])
-    group_discussion = GroupDiscussion(
-                 name = name,
-                 group = group      
-            )
+    group = Group.objects.get(id=request.POST.get("link_pk"))
+    params["name"] = name
+    params["group"] = group
+    group_discussion = GroupDiscussion(**params)     
     group_discussion.save()
-    return index(request,"Group Created")
+    return index(request,"Group Discussion Created")
