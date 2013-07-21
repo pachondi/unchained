@@ -7,9 +7,9 @@
  
 <form action='{{ action_url }}' method='post'>
 	Discussion Name:
-	<input name='name' value="{% firstof discussion_name 'Discusssion topic...'  %}" />
+	<input name='discussion_name' value="{% firstof discussion_name 'Discusssion topic...'  %}" />
 	Discussion belongs to Group {% firstof belongs_to|escape None %}:
-	<input name='belongs_to' value="{{ belongs_to|escape }}" />
+	<input type="hidden" name='belongs_to' value="{{ belongs_to|escape }}" />
 	{% if context_referrer %}
 	<input type="hidden" name="context_referrer" value="{{ context_referrer }}" ></input>
  	<input type="hidden" name="context_referrer_id" value="{{ context_referrer_id }}" ></input>

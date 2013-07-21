@@ -38,7 +38,7 @@ def create(request):
         return redirect('discussions.views.new')
 
     params = {}
-    name = request.POST["name"]
+    name = request.POST["discussion_name"]
     group = Group.objects.get(id=request.POST.get("belongs_to"))
     params["name"] = name
     params["group"] = group
