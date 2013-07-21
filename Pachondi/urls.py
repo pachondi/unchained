@@ -18,14 +18,14 @@ urlpatterns = patterns('groups.views',
                        (r'^groups/(?P<group_id>\d+)/destroy','destroy'), # to post after delete
                        #(r'^groups/destroy/(?P<group_id>\d+)','destroy'), # to post after delete
                        #(r'^groups/(?P<group_id>\d+)','show'),
-                       (r'^groups/(?P<pk>\d+)',GroupDetailView.as_view())
+                       (r'^groups/(?P<pk>\d+)',GroupDetailView.as_view(),None,'show-group')
 )
 
 urlpatterns += patterns('discussions.views',
                         (r'group_discussions$','index'),
                         (r'group_discussions/new$','new',None,'new-group-discussion'),
                         (r'group_discussions/create/$','create'),
-                        #(r'group_discussions/(?P<pk>\d+)','show'),
+                        (r'group_discussions/(?P<pk>\d+)','show',None,'show-group-discussion'),
 )
 
 
@@ -36,6 +36,11 @@ urlpatterns += patterns('messages.views',
                         #(r'group_discussions/(?P<pk>\d+)','show'),
 )
 
+"""
+https://docs.djangoproject.com/en/1.4/ref/contrib/staticfiles/#other-helpers
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+urlpatterns += staticfiles_urlpatterns()
+"""
 
 #(r'^groups*','index'), # catch all, defaults to index
     # Examples:

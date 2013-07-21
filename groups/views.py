@@ -1,8 +1,11 @@
 # Create your views here.
 
 import logging
+log = logging.getLogger(__name__)
+
 
 from groups.models import Group
+from groups.forms import GroupForm
 from discussions.models import GroupDiscussion
 # from django.template import Context, loader
 from django.views.generic import DetailView
@@ -10,7 +13,7 @@ from django.shortcuts import render_to_response, redirect
 #from django.http import HttpResponse
 
 # get a logging instance
-logger = logging.getLogger(__name__)
+
 
 # GET /groups
 def index(request, message=""):
@@ -51,16 +54,39 @@ class GroupDetailView(DetailView):
          'objects', 'pk', 'prepare_database_save', 'save', 'save_base', 
          'serializable_value', 'unique_error_message', 'validate_unique'
          ]
+         
+         self has
+             class django.views.generic.detail.SingleObjectTemplateResponseMixin
+                 'template_name_field', 'template_name_suffix', 'get_template_names'()
+             class django.views.generic.base.TemplateResponseMixin
+                 'template_name','response_class','render_to_response','get_template_names'()
+             class django.views.generic.detail.SingleObjectMixin
+                  'model','queryset', 'slug_field', 'slug_url_kwarg', 'pk_url_kwarg','context_object_name'
+                  'get_object', 'get_queryset', 'get_slug_field','get_context_object_name','get_context_data',
+             class django.views.generic.base.View
+                   'http_method_names','as_view','dispatch','http_method_not_allowed',
+                     
+        ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', 
+        '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', 
+        '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '_
+        _weakref__', 'args',  'get', 'head','kwargs', , 'object', ,  , 'request',
+        ]
         """
         context = super(GroupDetailView,self).get_context_data(**kwargs)
+        group_form = GroupForm(instance=kwargs["object"])
+        context["display_context"] = {
+                                    "mode":"show",
+                                    "button":"Edit",
+                                    "action":"edit",
+                                    "group_form": group_form
+                                   } 
         """
         Now this is one way to do it. But we don't want any 
         processing logic in the views. So get_group_discussions
         in the Group Model will handle data processing.
         # context["group_discussions_list"] =  GroupDiscussion.objects.filter(group__id__exact = "1")
         """
-        # print(dir(kwargs.get('object')))
-        #assert False
+        
         return context
     
 # GET /groups/:id
@@ -102,24 +128,42 @@ def create(request):
 
 #GET /groups/:id/edit
 def edit(request,group_id):
+    
+       
     group = Group.objects.get(id=group_id)
+    group_form = GroupForm(instance=group)
     return render_to_response(
-               'groups/form.html',                
+               'groups/group_detail.html',                
                {
-                'action':group_id + '/update',
-                'button':'Update',
-                'Group':group
+                'display_context':{
+                                    "mode":"edit",
+                                    "button":"Update",
+                                    "action":"update",
+                                    "group_form":group_form
+                                   },
+                'object':group
                 }                   
            )
 
 #PUT /groups/:id
 def update(request,group_id):
+    
+    if request.method != "POST":
+        return index(request,message="The requested path is not supported. Please browse recommended groups.")  
 
     group = Group.objects.get(id=group_id)
-    group.name = request.POST["name"]
-    group.description = request.POST["description"]
+    group.name = request.POST["group_name"]
+    group.description = request.POST["group_description"]
     group.save()
-    return index(request,message="Group " + group.group_name + " Updated.")   
+    '''
+    Three ways to redirect. 
+    1. Pass the absolute url
+    2. Pass the view name and key for a reverse lookup, if enabled in urls.py
+    3. redirect to the object, IIF get_absolute_url is defined for the object
+    '''
+    return redirect(group)
+    # return redirect("show-group",group_id) #
+    # return show(request,group_id,message="Group " + group.name + " Updated.")   
     #html = "<html><body>Testing</body></html>"
     #return HttpResponse(html)
 
