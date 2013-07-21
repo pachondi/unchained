@@ -25,14 +25,18 @@ urlpatterns += patterns('discussions.views',
                         (r'group_discussions$','index'),
                         (r'group_discussions/new$','new',None,'new-group-discussion'),
                         (r'group_discussions/create/$','create'),
-                        (r'group_discussions/(?P<pk>\d+)','show',None,'show-group-discussion'),
+                        (r'group_discussions/(?P<discussion_id>\d+)/edit','edit',None,'edit-group-discussion'),
+                        (r'group_discussions/(?P<discussion_id>\d+)/update','update',None,'update-group-discussion'),
 )
 
 
 urlpatterns += patterns('messages.views',
                         (r'group_discussion_messages/$','index'),
                         (r'group_discussion_messages/new$','new',None,'new-group-discussion-message'),
-                        (r'group_discussion_messages/create/$','create'),
+                        (r'group_discussion_messages/create/$','create',None,'create-group-discussion-message'),
+                        (r'group_discussion_messages/(?P<message_id>\d+)/edit','edit',None,'edit-group-discussion-message'), # 
+                        (r'group_discussion_messages/(?P<message_id>\d+)/update','update',None,'update-group-discussion-message'), 
+                        
                         #(r'group_discussions/(?P<pk>\d+)','show'),
 )
 

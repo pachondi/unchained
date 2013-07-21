@@ -1,15 +1,19 @@
- {% if link_pk %}
- 	This Discussion Message belongs to a {% firstof belongs_to "Discussion" %}, whose primary key is {{ link_pk|escape }} <br/> 
+ {% if belongs_to %}
+ 	This Discussion Message belongs to a {% firstof belongs_to "Discussion" %}, whose primary key is {{ belongs_to|escape }} <br/> 
  {% else %}
  	This Discussion Message is an orphan.
  {% endif %}		
  
-<form action='/group_discussion_messages/{{action}}/' method='post'>
-	Discussion Text:
-	<input name='raw_message' value="" />
-	Message belongs to Group Discussion {% firstof link_pk|escape None %}:
-	<input name='link_pk' value="{{ link_pk|escape }}" />
+ 
+ <form action="{{ action_url }}" method='post'>
+	<input name="raw_message" value="{{ raw_message }}" ></input>
+	Message belongs to Group Discussion {% firstof belongs_to|escape None %}:
+	<input type="hidden" name='belongs_to' value="{{ belongs_to|escape }}" />
+	{% if context_referrer %}
+	<input type="hidden" name="context_referrer" value="{{ context_referrer }}" ></input>
+ 	<input type="hidden" name="context_referrer_id" value="{{ context_referrer_id }}" ></input>
+	{% endif %}
 	{% if action %}
-	<input type="submit" value="{{button}}" >
+	<button type="submit" >{{button}}</button>
 	{% endif %}
 </form>

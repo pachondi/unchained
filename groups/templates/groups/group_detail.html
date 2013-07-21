@@ -62,24 +62,53 @@ Set properties for the group items for asynchronous requests
 <hr/>
 
 <div class="messages" >
-{{ object.get_messages_for_discussions }}
 <br/> <br/>
 {% for d,dobj,mlist in object.get_messages_for_discussions %}
 <div class="discussion_pane" id="div-gd-{{ dobj.id }}" >
-<label id="lbl-gd-{{ dobj.id }}" >{{ dobj.name }}</label>
+<form method="post" action="/group_discussions/{{ dobj.id }}/edit" >
+<input type="hidden" name="belongs_to" value="{{ object.id }}" ></input>
+<input type="hidden" name="context_referrer" value="group" ></input>
+<input type="hidden" name="context_referrer_id" value="{{ object.id }}" ></input>
+<input type="hidden" name="discussion_id" value="{{ dobj.id }}" ></input>
+<input type="hidden" name="action_url" value="group_discussions/{{ dobj.id }}/update" ></input>
+<input type="text" name="discussion_name" value="{{ dobj.name }}" readonly="readonly" ></input>
+<button type="submit" >Edit</button>
+</form>
  <div class="message_pane" >
  {% for m in mlist %}
  <div id="div-msg-{{ m.id }}" > 
-  {{ m.raw_message }}
+ <form method="post" action="{% url edit-group-discussion-message m.id %}" >
+ <input type="hidden" name="belongs_to" value="{{ d }}" ></input>
+ <input type="text" name="raw_message" value="{{ m.raw_message }}" ></input>
+ <input type="hidden" name="context_referrer" value="group" ></input>
+  <input type="hidden" name="context_referrer_id" value="{{ object.id }}" ></input>
+ <button type="submit" >Edit</button>
+ </form>  
  </div>
-  {% empty %}
-  <form method="post" action="{% url new-group-discussion-message %}" >
- <input type="text" value="Be the first to post..." ></input>
- </form>
  {% endfor %}
+  <form method="post" action="{% url create-group-discussion-message %}" >
+ <input type="hidden" name="belongs_to" value="{{ d }}" ></input>
+ <input type="text" name="raw_message" value="Post new message" ></input>
+ <input type="hidden" name="context_referrer" value="group" ></input>
+ <input type="hidden" name="context_referrer_id" value="{{ object.id }}" ></input>
+ <button type="submit" >Post</button>
+ </form>
+ 
  </div> <!-- end of div message_pane -->
 </div> <!-- end of div discussion_pane -->
 {% endfor %}
+ <div class="new-discussion-pane" >
+ Start a new discussion
+<form action='/group_discussions/create/' method='post'>
+	Discussion Name:
+	<input name='name' value="" />
+	<input name='belongs_to' value="{{ object.id|escape }}" />
+	<input type="hidden" name="context_referrer" value="group" ></input>
+    <input type="hidden" name="context_referrer_id" value="{{ object.id }}" ></input>
+	<input type="submit" value="Create" >
+</form>
+ </div>
+
 </div> <!-- end of div messages -->
 <hr/>
 {% comment %}
