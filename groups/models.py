@@ -32,7 +32,7 @@ class Group(models.Model):
         for i in range(len(displayable_discussions)):
             #displayable_messages =  gobj.groupdiscussionmessage_set.all()
             disc_id, disc_obj  = displayable_discussions[i]
-            message_list = disc_obj.groupdiscussionmessage_set.all()
+            message_list = disc_obj.groupdiscussionmessage_set.filter(is_active=True)
             displayable_discussions[i] = (disc_id, disc_obj, message_list)
         
         return displayable_discussions    
@@ -86,4 +86,16 @@ class Group(models.Model):
         class Meta:
             pass
 
+
+"""
+https://techknowhow.library.emory.edu/blogs/sturnbu/2009/06/03/django-custom-managers-and-related-objects
+http://zmsmith.com/2010/04/using-custom-django-querysets/
+def get_all_children(self, include_self=True):
+    r = []
+    if include_self:
+        r.append(self)
+    for c in Person.objects.filter(parent=self):
+        r.append(c.get_all_children(include_self=False))
+    return r
+"""
 

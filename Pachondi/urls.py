@@ -36,6 +36,7 @@ urlpatterns += patterns('messages.views',
                         (r'group_discussion_messages/create/$','create',None,'create-group-discussion-message'),
                         (r'group_discussion_messages/(?P<message_id>\d+)/edit','edit',None,'edit-group-discussion-message'), # 
                         (r'group_discussion_messages/(?P<message_id>\d+)/update','update',None,'update-group-discussion-message'), 
+                        (r'group_discussion_messages/(?P<message_id>\d+)/delete','delete',None,'delete-group-discussion-message'),
                         
                         #(r'group_discussions/(?P<pk>\d+)','show'),
 )

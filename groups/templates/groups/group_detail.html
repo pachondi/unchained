@@ -78,11 +78,14 @@ Set properties for the group items for asynchronous requests
  {% for m in mlist %}
  <div id="div-msg-{{ m.id }}" > 
  <form method="post" action="{% url edit-group-discussion-message m.id %}" >
- <input type="hidden" name="belongs_to" value="{{ d }}" ></input>
+ <input type="text" name="belongs_to" value="{{ d }}" ></input>
  <input type="text" name="raw_message" value="{{ m.raw_message }}" ></input>
+ <input type="text" name="reply_for" value="{{ m.linked_message }}" ></input>
  <input type="hidden" name="context_referrer" value="group" ></input>
-  <input type="hidden" name="context_referrer_id" value="{{ object.id }}" ></input>
- <button type="submit" >Edit</button>
+ <input type="hidden" name="context_referrer_id" value="{{ object.id }}" ></input>
+ <button type="submit" name="submit_mode" value="reply" >Reply</button>
+ <button type="submit" name="submit_mode" value="edit" >Edit</button>
+ <button type="submit" name="submit_mode" value="delete" >Delete</button>
  </form>  
  </div>
  {% endfor %}
