@@ -88,7 +88,14 @@ class Group(models.Model):
 
 
 """
+http://lightbird.net/dbe/blog2.html
+
+http://codeblogging.net/blogs/1/3/
+http://martinfitzpatrick.name/article/django-threaded-comments
+
+http://root.abl.es/methods/1524/django-threaded-comments/
 http://stackoverflow.com/questions/17157828/django-how-to-display-comments-and-replies-made-on-that-comment-in-template
+
 https://techknowhow.library.emory.edu/blogs/sturnbu/2009/06/03/django-custom-managers-and-related-objects
 http://zmsmith.com/2010/04/using-custom-django-querysets/
 def get_all_children(self, include_self=True):
