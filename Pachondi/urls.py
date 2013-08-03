@@ -41,7 +41,7 @@ urlpatterns += patterns('messages.views',
                         #(r'group_discussions/(?P<pk>\d+)','show'),
 )
 
-"""
+"""::
 https://docs.djangoproject.com/en/1.4/ref/contrib/staticfiles/#other-helpers
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns += staticfiles_urlpatterns()
