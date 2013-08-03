@@ -1,0 +1,10 @@
+    {{ message }}
+    <ul>
+        {% for group in group_list %}
+         <li>id:{{group.id}}, Name:{{group.name}}, Description:{{group.description}}</li>
+        {% endfor %}
+    <ul>    
+ 
+ 	<a href='/groups/new'>Create Group</a>
+ 	
+         	 

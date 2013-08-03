@@ -1,0 +1,11 @@
+ {{action}} 
+<form action='/groups/{{action}}/' method='post'>
+	Group Name:
+	<input name='name' value="{{Group.name|escape}}" />
+	Description:
+	<input name='description' value="{{Group.description|escape}}" />
+	{% if action %}
+	<input type="submit" value="{{button}}" >
+	{% endif %}
+
+</form>

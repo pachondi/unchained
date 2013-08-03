@@ -1,7 +1,10 @@
 # Django settings for Pachondi project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+PROJECT_DIR = os.path.dirname(__file__)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -70,6 +73,14 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    # This setting defines the additional locations the staticfiles app will 
+    # traverse if the FileSystemFinder finder is enabled, e.g. if you use 
+    # the collectstatic or findstatic management command or use the static 
+    # file serving view. In case you want to refer to files in one of the 
+    # locations with an additional namespace, you can optionally provide a 
+    # prefix as (prefix, path) tuples,
+    
+    ("js",os.path.join(PROJECT_DIR, '../lib/static/js')),
 )
 
 # List of finder classes that know how to find static files in
@@ -93,7 +104,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -109,6 +120,9 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    # M:\DOCS\GitRep\unchained\groups\templates\groups\form.html (django.template.loaders.app_directories.Loader)
+    "M:/DOCS/GitRep/unchained/groups/templates",
+    
 )
 
 INSTALLED_APPS = (
@@ -118,8 +132,14 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # All user created apps
+    'groups',
+    'discussions',
+    'messages',
+    # South for database migrations
+    'south',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -131,7 +151,13 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },    
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -142,13 +168,46 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'null': {
+            'level':'DEBUG',
+            'class':'django.utils.log.NullHandler',
+        },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': PROJECT_DIR + "/logfiles",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+        },                         
+        'console':{
+            'level':'INFO',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        }                          
     },
     'loggers': {
+          """
+       'django': {
+            'handlers':['console'],
+            'propagate': True,
+            'level':'WARN',
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },          
+          """      
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
+        'groups': {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+        },                
     }
 }
