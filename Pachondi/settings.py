@@ -121,7 +121,9 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     # M:\DOCS\GitRep\unchained\groups\templates\groups\form.html (django.template.loaders.app_directories.Loader)
-    "M:/DOCS/GitRep/unchained/groups/templates",
+    # os.path.join(PROJECT_DIR, '../<app>/templates'), -> loaded by file system loader for templates
+    os.path.join(PROJECT_DIR, '../groups/templates'),
+    #"M:/DOCS/GitRep/unchained/groups/templates",
     
 )
 
