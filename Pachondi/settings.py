@@ -15,10 +15,10 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'pachondi_development',                      # Or path to database file if using sqlite3.
+        'NAME': os.path.join(PROJECT_DIR, '../pachondi_development'),                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
-        'PORT': '',                      # Set to empty string for default.
+        'PORT': '',                      # Set to mpty string for default.
     }
 }
 
@@ -139,7 +139,7 @@ INSTALLED_APPS = (
     'discussions',
     'messages',
     # South for database migrations
-    'south',
+    #'south',
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

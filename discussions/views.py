@@ -38,7 +38,7 @@ def create(request):
         return redirect('discussions.views.new')
 
     params = {}
-    name = request.POST["discussion_name"]
+    name = request.POST["name"]
     group = Group.objects.get(id=request.POST.get("belongs_to"))
     params["name"] = name
     params["group"] = group
@@ -76,7 +76,7 @@ def edit(request,discussion_id):
 def update(request,discussion_id):
     
     gd = GroupDiscussion.objects.get(id=discussion_id)
-    gd.name = request.POST["discussion_name"]
+    gd.name = request.POST["name"]
     gd.save()
 
     context_referrer = request.POST.get("context_referrer")
