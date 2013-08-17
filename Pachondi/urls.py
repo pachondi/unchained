@@ -27,6 +27,7 @@ urlpatterns += patterns('discussions.views',
                         (r'group_discussions/create/$','create'),
                         (r'group_discussions/(?P<discussion_id>\d+)/edit','edit',None,'edit-group-discussion'),
                         (r'group_discussions/(?P<discussion_id>\d+)/update','update',None,'update-group-discussion'),
+                        (r'^group_discussions/(?P<pk>\d+)','show',None,'show-group')
 )
 
 

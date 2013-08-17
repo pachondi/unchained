@@ -92,7 +92,7 @@ def show(request,pk):
     return render_to_response(
         'discussions/group_discussion_detail.html',
         {
-         'GroupDiscussion':groupdiscussion,
+         'gd':groupdiscussion,
          'link_pk':pk
         }
     )
