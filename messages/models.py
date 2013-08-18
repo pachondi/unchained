@@ -16,9 +16,9 @@ class Message(models.Model):
       
 class GroupDiscussionMessage(Message):
     raw_message = models.CharField(max_length=100)
-    group_discussion = models.ForeignKey(GroupDiscussion)
-    linked_message = models.ForeignKey('self',related_name="reply_for",null=True,blank=True)
-    
+    group_discussion = models.ForeignKey(GroupDiscussion, related_name="for_group")
+    linked_message = models.ForeignKey('self',related_name="for_reply",null=True,blank=True)
+        
     
     def get_messages_for_parent(self,gd_id):
         return [ (messages.id, messages.raw_message, messages.linked_message) for messages in self.objects.filter(group_discussion=gd_id,is_active=True) ]  
