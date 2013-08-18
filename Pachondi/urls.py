@@ -9,8 +9,10 @@ urlpatterns = patterns('',
                         url(r'^groups/', include('groups.urls')),
 )
 
+
 urlpatterns += patterns('',
-                        url(r'^group_discussions/', include('discussions.urls')),                        
+                        url(r'^group_discussions/', include('discussions.urls')),                       
+
 )
 
 
@@ -26,8 +28,7 @@ urlpatterns += patterns('messages.views',
 )
 
 urlpatterns += patterns('',
-                        url(r'^users/', include('users.urls')),
-                        url(r'^relationships/', include('relationships.urls')),
+                        url(r'^users/', include('users.urls')),                        
 )
 
 """::
