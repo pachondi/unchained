@@ -47,7 +47,7 @@
 		<tr><td></td>
 			<td>
 				<table width="300">
-			{%for comment in post|comments%}
+			{%for comment in post|comments%} 
 				<tr><td valign="top" width="150">
 				<a href="{%url 'users.views.view_profile' comment.comment_by.user_slug%}">{{comment.comment_by}}</a>
 				</td><td>
