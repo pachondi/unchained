@@ -1,0 +1,40 @@
+{% extends "users/base.html" %}
+{% load url from future %}
+
+{% block content %}
+<b> User Settings</b><br/>
+{{user}}<br/>
+Member since: {{user.date_joined}}<br/>
+Primary Email:{{user.email}}
+
+<h4>Privacy Settings</h4>
+<form action="{% url 'users.views.settings'%}" method="post">
+	{% csrf_token %}
+{% for field in form %}
+  <p>
+    {{ field.label_tag }}: {{ field }}
+    {{ field.errors }}
+  </p>
+  {% endfor %}
+  <p><input type="submit" value="save settings" id="btnSave" /></p>
+</form>
+
+<h4>Emails and notifications</h4>
+
+<form action="{% url 'users.views.notificationsettings'%}" method="post">
+	{% csrf_token %}	 
+ {% for notification in notifications %}
+ <p> 	
+ 	{{notification.is_default_enabled}}
+ 	{% if notification.is_default_enabled %}
+ 		<input type="checkbox" id="notification{{notification.id}}" name="notification" value="{{notification.id}}" checked/>{{notification.type}}
+ 	{%else%}
+ 		<input type="checkbox" id="notification{{notification.id}}" name="notification" value="{{notification.id}}"/>{{notification.type}}
+ 	{% endif %}
+ 	
+ </p> 
+ {% endfor %}
+ <p><input type="submit" value="save notification settings" id="btnNSave" /></p>
+</form>
+
+{% endblock %}

@@ -5,28 +5,12 @@ from groups.views import GroupDetailView
 # from django.contrib import admin
 # admin.autodiscover()
 # [:index, :show, :new, :create, :edit, :update, :destroy] 
-urlpatterns = patterns('groups.views',
-                       (r'^groups/$','index'), # show all group
-                       (r'^groups/new$','new'),  # to create a group
-                       (r'^groups/create/$','create'),  # post after create
-                       (r'^groups/(?P<group_id>\d+)/edit','edit'), # to edit a group
-                       #(r'^groups/edit/(?P<group_id>\d+)','edit'), # to edit a group
-                       (r'^groups/(?P<group_id>\d+)/update','update'), # post after edit
-                       #(r'^groups/update/(?P<group_id>\d+)','update'), # post after edit
-                       (r'^groups/(?P<group_id>\d+)/delete','delete'), # to delete a group
-                       #(r'^groups/delete/(?P<group_id>\d+)','delete'), # to delete a group
-                       (r'^groups/(?P<group_id>\d+)/destroy','destroy'), # to post after delete
-                       #(r'^groups/destroy/(?P<group_id>\d+)','destroy'), # to post after delete
-                       #(r'^groups/(?P<group_id>\d+)','show'),
-                       (r'^groups/(?P<pk>\d+)',GroupDetailView.as_view(),None,'show-group')
+urlpatterns = patterns('',
+                        url(r'^groups/', include('groups.urls')),
 )
 
-urlpatterns += patterns('discussions.views',
-                        (r'group_discussions$','index'),
-                        (r'group_discussions/new$','new',None,'new-group-discussion'),
-                        (r'group_discussions/create/$','create'),
-                        (r'group_discussions/(?P<discussion_id>\d+)/edit','edit',None,'edit-group-discussion'),
-                        (r'group_discussions/(?P<discussion_id>\d+)/update','update',None,'update-group-discussion'),
+urlpatterns += patterns('',
+                        url(r'^group_discussions/', include('discussions.urls')),                        
 )
 
 
@@ -39,6 +23,11 @@ urlpatterns += patterns('messages.views',
                         (r'group_discussion_messages/(?P<message_id>\d+)/delete','delete',None,'delete-group-discussion-message'),
                         
                         #(r'group_discussions/(?P<pk>\d+)','show'),
+)
+
+urlpatterns += patterns('',
+                        url(r'^users/', include('users.urls')),
+                        url(r'^relationships/', include('relationships.urls')),
 )
 
 """::

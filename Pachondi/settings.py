@@ -83,6 +83,8 @@ STATICFILES_DIRS = (
     ("js",os.path.join(PROJECT_DIR, '../lib/static/js')),
 )
 
+IMAGE_UPLOAD_PATH='/static/'
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -123,6 +125,7 @@ TEMPLATE_DIRS = (
     # M:\DOCS\GitRep\unchained\groups\templates\groups\form.html (django.template.loaders.app_directories.Loader)
     # os.path.join(PROJECT_DIR, '../<app>/templates'), -> loaded by file system loader for templates
     os.path.join(PROJECT_DIR, '../groups/templates'),
+    os.path.join(PROJECT_DIR, '../templates'),
     #"M:/DOCS/GitRep/unchained/groups/templates",
     
 )
@@ -139,7 +142,10 @@ INSTALLED_APPS = (
     'discussions',
     'messages',
     # South for database migrations
-    'south',
+    #'south',
+    #'relationships',
+    'users',
+    'geography',
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -213,3 +219,9 @@ LOGGING = {
         },                
     }
 }
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = 'ram.be2005@gmail.com'
+EMAIL_HOST_PASSWORD = 'imbzotkavlqmgaua'
+EMAIL_USE_TLS = True

@@ -1,13 +1,26 @@
 import logging
+from users.models import SiteUser
 log = logging.getLogger(__name__)
 from django.db import models
 
 
+class GroupType(models.Model):
+    type = models.CharField(max_length=30)
+    description = models.CharField(max_length=1000)
+    is_active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.type
+    
 # Create your models here.
 class Group(models.Model):
     name = models.CharField(max_length=30)
+    type = models.ForeignKey(GroupType)
     description = models.CharField(max_length=1000)
+    website=models.CharField(max_length=256)
+    terms=models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    created_by = models.ForeignKey(SiteUser,null=False, blank=False)        
     
     def get_object_data(self):
         return dict([(field.name,self._get_FIELD_display(field)) for field in self.__class__._meta.fields])

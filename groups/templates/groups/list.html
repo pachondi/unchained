@@ -1,10 +1,16 @@
-    {{ message }}
+{% extends "users/base.html" %}
+{% block content %}
+{% load url from future %} 
+    {{ message }}    
+    
     <ul>
         {% for group in group_list %}
-         <li>id:{{group.id}}, Name:{{group.name}}, Description:{{group.description}}</li>
+         <li><a href="{%url 'groups.views.show_group' group.id%}">{{group.name}}</a> 
+         	<br/>{{group.description}}</li>
         {% endfor %}
-    <ul>    
+    </ul>    
  
- 	<a href='/groups/new'>Create Group</a>
+ 	<a href="{%url 'groups.views.create_group'%}">Create Group</a>
  	
+{%endblock%}
          	 

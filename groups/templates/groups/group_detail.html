@@ -1,18 +1,5 @@
-{% load staticfiles %}
-{% load custom_tags %}
-{% load static %}
-{% get_static_prefix as STATIC_PREFIX %}
-
-<head>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.10.1.min.js" ></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/underscore-min.js" ></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone-min.js" ></script>
-<script type="text/javascript" src="{{ STATIC_PREFIX }}groups/js/groups.js" ></script>
-<link rel="stylesheet" href="{{ STATIC_PREFIX }}groups/css/groups.css" type="text/css" />
-</head>
-
-<body>
-<br/>
+{% extends "users/base.html" %}
+{% block content %}
 
 {% comment %}
 Get the group specific items and put them in specific items
@@ -209,7 +196,7 @@ Messages:<br/>
 {% endwith %}
 
 <a href='{% url new-group-discussion %}?link_pk={{object.id}}' >Create Discussion</a>
-{% endcomment %}	
+{% endcomment %}
 	
-</body>
 
+{%endblock%}

@@ -1,7 +1,10 @@
 {% extends "users/base.html" %}
+{% load url from future %}
 {% block content %}
-{% load url from future %} 
- <form action="{%url 'groups.views.create_group'%}" method="post">
+
+Welcome {{user.first_name}},<br/>
+
+<form action="{%url 'users.views.profile'%}" method="post">
 	 {% csrf_token %}
   {% for field in form %}
   <p>
@@ -11,4 +14,5 @@
   {% endfor %}
   <p><input type="submit" value="Create Profile" /></p>
 </form>
-{%endblock%}
+
+{% endblock %}
