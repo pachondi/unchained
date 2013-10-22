@@ -72,6 +72,7 @@ def show_group(request, group_id,message=""):
                 'action':'',
                 'button':'',
                 'Group':group,
+                'object':group,
                 'user':user,
                 'message':message
                 },

@@ -22,6 +22,8 @@ Set properties for the group items for asynchronous requests
 'save', 'validate_unique', 'visible_fields']
 {% endcomment %}
 
+eyyy{{ Group.id }}
+
 {% with gf=display_context.group_form %}
 <div class="group-container" >
 
@@ -64,7 +66,7 @@ Set properties for the group items for asynchronous requests
  <div class="message_pane" >
  {% for m in mlist %}
  <div id="div-msg-{{ m.id }}" > 
- <form method="post" action="{% url edit-group-discussion-message m.id %}" >
+ <form method="post" action="{% url 'edit-group-discussion-message' m.id %}" >
  <input type="text" name="belongs_to" value="{{ d }}" ></input>
  <input type="text" name="raw_message" value="{{ m.raw_message }}" ></input>
  <input type="text" name="reply_for" value="{{ m.linked_message }}" ></input>
@@ -76,7 +78,7 @@ Set properties for the group items for asynchronous requests
  </form>  
  </div>
  {% endfor %}
-  <form method="post" action="{% url create-group-discussion-message %}" >
+  <form method="post" action="{% url 'create-group-discussion-message' %}" >
  <input type="hidden" name="belongs_to" value="{{ d }}" ></input>
  <input type="text" name="raw_message" value="Post new message" ></input>
  <input type="hidden" name="context_referrer" value="group" ></input>
@@ -89,10 +91,10 @@ Set properties for the group items for asynchronous requests
 {% endfor %}
  <div class="new-discussion-pane" >
  Start a new discussion
-<form action='/group_discussions/create/' method='post'>
+<form method="post" action="{% url 'create-group-discussion' %}" >
 	Discussion Name:
 	<input name='name' value="" />
-	<input name='belongs_to' value="{{ object.id|escape }}" />
+	<input name='belongs_to' value="{{ object.id }}" />
 	<input type="hidden" name="context_referrer" value="group" ></input>
     <input type="hidden" name="context_referrer_id" value="{{ object.id }}" ></input>
 	<input type="submit" value="Create" >
