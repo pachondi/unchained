@@ -33,6 +33,7 @@ def create(request,reply_for=None):
     reply_for is a message instance. Need to check if this
     is a good idea
     """
+  
     if request.method != "POST":
         return redirect('messages.views.index') #need to point to discussion
     

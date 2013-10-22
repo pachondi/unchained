@@ -1,12 +1,14 @@
 # Create your views here.
 from discussions.models import Group, GroupDiscussion
 from django.shortcuts import render_to_response, redirect
+
 # from django.template import RequestContext
 
 # Create your views here.
 
 # GET /discussions
 def index(request, message=""):
+    
     group_discussion_list = GroupDiscussion.objects.all()
     return render_to_response(
         'discussions/list.html'
@@ -31,12 +33,13 @@ def new(request):
 
 # POST /discussion
 def create(request):
+    
     if request.method != "POST":
         return redirect('discussions.views.new')
     
     if not request.POST.get("belongs_to"):
         return redirect('discussions.views.new')
-
+    
     params = {}
     name = request.POST["name"]
     group = Group.objects.get(id=request.POST.get("belongs_to"))

@@ -15,6 +15,6 @@ urlpatterns = patterns('',
                        (r'^(?P<group_id>\d+)/destroy','destroy'), # to post after delete
                        #(r'^destroy/(?P<group_id>\d+)','destroy'), # to post after delete
                        #(r'^(?P<group_id>\d+)','show'),
-                       (r'^(?P<group_id>\d+)','groups.views.show_group',None),
+                       (r'^(?P<group_id>\d+)','groups.views.show_group',None,'show-group'),
                        (r'^creategroup$','groups.views.create_group',None),
                        )
