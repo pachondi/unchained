@@ -1,22 +1,22 @@
 from django.conf.urls import patterns, include, url
-from groups.views import GroupDetailView
+from app.groups.views import GroupDetailView
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 # [:index, :show, :new, :create, :edit, :update, :destroy] 
 urlpatterns = patterns('',
-                        url(r'^groups/', include('groups.urls')),
+                        url(r'^groups/', include('app.groups.urls')),
 )
 
 
 urlpatterns += patterns('',
-                        url(r'^group_discussions/', include('discussions.urls')),                       
+                        url(r'^group_discussions/', include('app.discussions.urls')),                       
 
 )
 
 
-urlpatterns += patterns('messages.views',
+urlpatterns += patterns('app.messages.views',
                         (r'group_discussion_messages/$','index'),
                         (r'group_discussion_messages/new$','new',None,'new-group-discussion-message'),
                         (r'group_discussion_messages/create/$','create',None,'create-group-discussion-message'),
@@ -28,7 +28,7 @@ urlpatterns += patterns('messages.views',
 )
 
 urlpatterns += patterns('',
-                        url(r'^users/', include('users.urls')),                        
+                        url(r'^users/', include('app.users.urls')),                        
 )
 
 """::
