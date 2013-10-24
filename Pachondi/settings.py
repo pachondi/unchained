@@ -124,7 +124,7 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     # M:\DOCS\GitRep\unchained\groups\templates\groups\form.html (django.template.loaders.app_directories.Loader)
     # os.path.join(PROJECT_DIR, '../<app>/templates'), -> loaded by file system loader for templates
-    os.path.join(PROJECT_DIR, '../groups/templates'),
+    os.path.join(PROJECT_DIR, '../app/groups/templates'),
     os.path.join(PROJECT_DIR, '../templates'),
     #"M:/DOCS/GitRep/unchained/groups/templates",
     
@@ -138,14 +138,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # All user created apps
-    'groups',
-    'discussions',
-    'messages',
+    'app.groups',
+    'app.discussions',
+    'app.messages',
     # South for database migrations
     #'south',
     #'relationships',
-    'users',
-    'geography',
+    'app.users',
+    'app.geography',
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
