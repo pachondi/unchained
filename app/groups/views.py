@@ -4,8 +4,18 @@ import logging
 from django.contrib.auth.decorators import login_required
 from app.users.models import SiteUser
 from django.template.context import RequestContext
+<<<<<<< HEAD:app/groups/views.py
 from app.groups.models import Group
 from app.groups.forms import GroupForm
+=======
+log = logging.getLogger(__name__)
+
+
+from app.groups.models import Group
+from app.groups.forms import GroupForm
+#from app.discussions.models import GroupDiscussion
+# from django.template import Context, loader
+>>>>>>> master:app/groups/views.py
 from django.views.generic import DetailView
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 
@@ -69,6 +79,7 @@ def show_group(request, group_id,message=""):
                 'action':'',
                 'button':'',
                 'Group':group,
+                'object':group,
                 'user':user,
                 'message':message
                 },

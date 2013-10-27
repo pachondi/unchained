@@ -1,11 +1,23 @@
+from django import forms
+from django.contrib.admin.sites import site
 from django.contrib.sites.models import Site
+<<<<<<< HEAD:app/users/forms.py
 from app.users.settings.models import UserSettings
 from app.users.models import SiteUser
+=======
+>>>>>>> master:app/users/forms.py
 from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
 from django.utils.http import int_to_base36
 from django.template import Context, loader
+<<<<<<< HEAD:app/users/forms.py
 from django import forms
 from django.core.mail import send_mail
+=======
+from django.utils.datetime_safe import datetime
+from app.geography.models import State
+from app.users.models import SiteUser, UserProfile, Country, UserSettings
+>>>>>>> master:app/users/forms.py
 
 class UserSettingsForm(forms.ModelForm):
     #is_activity_broadcast = forms.BooleanField(label="Turn on/off your activity broadcast")

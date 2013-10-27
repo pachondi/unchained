@@ -1,147 +1,126 @@
+from django.conf import settings
+from django.contrib.auth.models import User, UserManager
+from django.core.exceptions import ValidationError
 from django.db import models
-from Pachondi.core.modelbase.models import BaseModel
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.template.defaultfilters import default
+from django.utils.datetime_safe import datetime
+from django.views.decorators.csrf import csrf_protect
 from south.modelsinspector import timezone
-from django.utils.translation import ugettext as _
-from django.core.mail import send_mail
+from token import EQUAL
+from test.test_imageop import MAX_LEN
+from app.geography.models import Country, State
 
-class SiteUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        """
-        Creates and saves a User with the given username, email and password.
-        """
-        now = timezone.now()
-        if not email:
-            raise ValueError('The given username must be set')
-        email = SiteUserManager.normalize_email(email)
-        user = self.model(email=email, is_active=True, is_verified=False,
-                          last_login=now, created_date=now, **extra_fields)
 
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+ACCESS_LEVEL = ((1,'Public'), (2,'Network'), (3,'Connections'), (4,'You'))
 
-    def create_superuser(self, username, email, password, **extra_fields):
-        u = self.create_user(username, email, password, **extra_fields)        
-        u.is_admin=True
-        u.save(using=self._db)
-        return u
-
- 
- 
-class SiteUser(AbstractBaseUser, PermissionsMixin):
-   
-    
-    email = models.EmailField(_('email address'),
-        max_length=255,
-        unique=True,
-        db_index=True,
-        )
-    first_name = models.CharField(_('First Name'), max_length=128, error_messages={'blank':_("First name cannot be empty")})
-    last_name = models.CharField(max_length=128, null=True)
+class SiteUser(User):
     user_slug = models.CharField(max_length=128)
-    dob=models.DateField(_('Date of birth'), default=timezone.now())
-    website=models.CharField(_('Website'), max_length=256)
-    is_active = models.BooleanField(default=True)
-    is_verified = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
-    is_locked = models.BooleanField(default=False)
-    invalid_attempts = models.IntegerField(default=0)
-    lock_expires_on = models.DateTimeField(null=True);
+    dob=models.DateField(default=timezone.now())
+    is_verified = models.BooleanField(default=False)    
+    sent_requests = models.ManyToManyField('self',symmetrical=False, related_name='requests')
+    my_requests = models.ManyToManyField('self',symmetrical=False, related_name='pending')
+    connections = models.ManyToManyField('self')
     
-    is_show_viewers_also_viewed = models.BooleanField(default=False)
-    created_date = models.DateTimeField(_('account created date'), default=timezone.now)
-    modified_date = models.DateTimeField(_('account modified date'), default=timezone.now)
-    
-    objects = SiteUserManager()    
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['']
-    
-    class Meta:
-        verbose_name = _('siteuser')
-        verbose_name_plural = _('siteusers')
- 
-    def get_full_name(self):
-        """
-        Returns the first_name plus the last_name, with a space in between.
-        """
-        full_name = '%s %s' % (self.first_name, self.last_name)
-        return full_name.strip()
-
- 
-    def get_short_name(self):
-        "Returns the short name for the user."
-        return self.first_name
- 
     def __unicode__(self):
         return self.first_name + ' ' + self.last_name
- 
-    def has_perm(self, perm, obj=None):
-        # Handle whether the user has a specific permission?"
-        return True
- 
-    def has_module_perms(self, app_label):
-        # Handle whether the user has permissions to view the app `app_label`?"
-        return True
- 
-    @property
-    def is_staff(self):
-        # Handle whether the user is a member of staff?"
-        return self.is_admin
     
-    def get_absolute_url(self):
-        return "/users/%s/" % self.user_slug
+    def validate(self):        
+        if self.first_name == "":
+            raise ValidationError("First name cannot be empty")
+        if self.email == "":
+            return False
+        if self.username == "":
+            return False
     
-    def email_user(self, subject, message, from_email=None):
-        """
-        Sends an email to this User.
-        """
-        send_mail(subject, message, from_email, [self.email])
+    def create_settings(self):
+        user_settings = UserSettings()
+        user_settings.user = self
+        user_settings.save()
+    
+    #def add_to_network(self):
+    #    node_user = NodeUser()
+    #    node_user.user_id = self.id
+    #    node_user.name = self.first_name + ' ' + self.last_name        
+    #    node_user.save()
         
+class ConnectionRequest(models.Model):
+    from_user = models.ForeignKey(SiteUser,related_name='from_user')
+    to_user = models.ForeignKey(SiteUser, related_name='to_user')
+    status = models.CharField(max_length=1)
+    request_dt = models.DateTimeField(default=datetime.now())
+    accept_dt = models.DateTimeField(default=datetime.now())   
+
         
-    
-class UserEmail(BaseModel):
+class UserPost(models.Model):
     user = models.ForeignKey(SiteUser)
-    email = models.EmailField(_('email address'),
-        max_length=255,
-        unique=True,
-        )
-    is_verified=models.BooleanField(default=False)
-    is_primary=models.BooleanField(default=False)
+    message = models.CharField(max_length=2048)
+    post_by = models.ForeignKey(SiteUser, related_name='post_by')
+    post_dt = models.DateTimeField(default=datetime.now())
+        
+class PostComment(models.Model):    
+    post = models.ForeignKey(UserPost)    
+    message = models.CharField(max_length=2048)
+    comment_by = models.ForeignKey(SiteUser)
+    commented_dt = models.DateTimeField(default=datetime.now())
     
-class UserWebsites(BaseModel):
+class UserProfile(models.Model):
     user = models.ForeignKey(SiteUser)
-    type = models.CharField(max_length=50)
-    website = models.CharField(_('website'),
-        max_length=255
-        )
+    country = models.ForeignKey(Country)
+    state = models.ForeignKey(State)
+    mobile=models.CharField(max_length=16)
+    #photo=models.ImageField(upload_to=settings.IMAGE_UPLOAD_PATH, blank=True)
+    #thumbnail = models.ImageField(upload_to=settings.THUMBNAIL_UPLOAD_PATH)
+    #postal_code = models.CharField(max_length=16)
+    CURRENTLY_CHOICES = (('S','Student'),('E','Employed'),('J','JobSeeker'))
+    currently = models.CharField(max_length=1, choices=CURRENTLY_CHOICES,default='S')
     
+#is_activity_broadcast : 0-Your activity will not be published, 1-your activity will be published.
+#broadcast_level: Restricts who can view your activity.
+#network_trace_level: Who can look into your network.
+class UserSettings(models.Model):
+    user = models.OneToOneField(SiteUser, primary_key=True)
+    is_activity_broadcast = models.BooleanField(default=True)
+    broadcast_level = models.IntegerField(choices=ACCESS_LEVEL, default=3)
+    network_trace_level = models.IntegerField(choices=ACCESS_LEVEL, default=3)
+    
+    def get_notification_settings(self):
+        try:
+            user_notifications = UserNotification.objects.filter(user=self.user)
+        except UserNotification.DoesNotExist:
+            user_notifications = UserNotification()
+            
+        user_notification_ids = set(user_notification.id for user_notification in user_notifications)
+        selected_notifications=NotificationType.objects.all()
+        for notification in selected_notifications:
+            if notification.id in user_notification_ids:
+                notification.is_default_enabled = not notification.is_default_enabled
+            
 
-
-class Skill(BaseModel):
-    name = models.CharField(max_length=128)
+        return selected_notifications
     
-class UserSkills(BaseModel):
-    user = models.ForeignKey(SiteUser)
-    skill = models.ForeignKey(Skill)    
-    skill_name = models.CharField(max_length=128)
-    #attested_users = models.ManyToManyField() 
+    def set_notification_settings(self, selected_notifications):
+        
+        for selected_notification in selected_notifications:
+            notification = NotificationType.objects.get(pk=selected_notification.id)
+            user_notify = UserNotification.objects.filter(user=self.user).filter(notificationtype=notification)
+            if user_notify.exists():
+                if notification.is_default_enabled is selected_notification.is_default_enabled:               
+                    user_notify.delete()
+            else:
+                if notification.is_default_enabled != selected_notification.is_default_enabled:
+                    user_notify = UserNotification()
+                    user_notify.user=self.user
+                    user_notify.notificationtype=notification
+                    user_notify.save()
+                
     
-class UserRecommendation(BaseModel):
-    RECOMMEND_AS = (
-                    (1,_('Colleague')), 
-                    (2, _('Student')), 
-                    (3, _('Business official')),
-                    )
+class NotificationType(models.Model):
+    type = models.CharField(max_length=256)
+    is_default_enabled = models.BooleanField(default=True)
+    
+class UserNotification(models.Model):
     user = models.ForeignKey(SiteUser)
-    message = models.CharField(max_length=2000)    
-    recommender = models.ForeignKey(SiteUser, related_name='recommended_by')
-    recommended_as = models.IntegerField(_('recommended as'), choices=RECOMMEND_AS)
-    recommend_basis = models.CharField(max_length=256)
-    recommender_title = models.CharField(max_length=256)
-    user_title = models.CharField(max_length=256)
-    created_date = models.DateTimeField()
- 
+    notificationtype = models.ForeignKey(NotificationType)
     
     
     

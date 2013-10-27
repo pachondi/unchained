@@ -1,4 +1,8 @@
 from django.conf.urls import patterns, include, url
+<<<<<<< HEAD
+=======
+from app.groups.views import GroupDetailView
+>>>>>>> master
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -15,8 +19,12 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
+<<<<<<< HEAD
                         url(r'^relationships/', include('app.relationships.urls')),                        
 )
+=======
+                        url(r'^group_discussions/', include('app.discussions.urls')),                       
+>>>>>>> master
 
 urlpatterns += patterns('',
                         url(r'^profile/', include('app.profile.urls')),                        
@@ -27,7 +35,11 @@ urlpatterns += patterns('',
 
 )
 
+<<<<<<< HEAD
 urlpatterns += patterns('Pachondi.libs.message.views',
+=======
+urlpatterns += patterns('app.messages.views',
+>>>>>>> master
                         (r'group_discussion_messages/$','index'),
                         (r'group_discussion_messages/new$','new',None,'new-group-discussion-message'),
                         (r'group_discussion_messages/create/$','create',None,'create-group-discussion-message'),
@@ -38,6 +50,12 @@ urlpatterns += patterns('Pachondi.libs.message.views',
                         #(r'group_discussions/(?P<pk>\d+)','show'),
 )
 
+<<<<<<< HEAD
+=======
+urlpatterns += patterns('',
+                        url(r'^users/', include('app.users.urls')),                        
+)
+>>>>>>> master
 
 """::
 https://docs.djangoproject.com/en/1.4/ref/contrib/staticfiles/#other-helpers

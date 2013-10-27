@@ -127,8 +127,13 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     # M:\DOCS\GitRep\unchained\groups\templates\groups\form.html (django.template.loaders.app_directories.Loader)
     # os.path.join(PROJECT_DIR, '../<app>/templates'), -> loaded by file system loader for templates
+<<<<<<< HEAD
     #os.path.join(PROJECT_DIR, '../groups/templates'),
     #os.path.join(PROJECT_DIR, '../templates'),
+=======
+    os.path.join(PROJECT_DIR, '../app/groups/templates'),
+    os.path.join(PROJECT_DIR, '../templates'),
+>>>>>>> master
     #"M:/DOCS/GitRep/unchained/groups/templates",
     
 )
@@ -141,6 +146,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # All user created apps
+<<<<<<< HEAD
     'Pachondi.core.modelbase',
     #'Pachondi.core.models',
     'Pachondi.libs.discussions',
@@ -159,11 +165,25 @@ INSTALLED_APPS = (
     #'relationships',   
     # South for database migrations
     #'south',    
+=======
+    'app.groups',
+    'app.discussions',
+    'app.messages',
+    # South for database migrations
+    #'south',
+    #'relationships',
+    'app.users',
+    'app.geography',
+>>>>>>> master
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+#LOGIN settings
+LOGIN_URL = "/users/login"
+LOGIN_REDIRECT_URL = "/users/profile"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -1,4 +1,9 @@
 import logging
+<<<<<<< HEAD:app/groups/models.py
+=======
+from app.users.models import SiteUser
+log = logging.getLogger(__name__)
+>>>>>>> master:app/groups/models.py
 from django.db import models
 from app.users.models import SiteUser
 from Pachondi.libs.discussions.models import Discussion
@@ -54,7 +59,7 @@ class Group(BaseModel):
         for i in range(len(displayable_discussions)):
             #displayable_messages =  gobj.groupdiscussionmessage_set.all()
             disc_id, disc_obj  = displayable_discussions[i]
-            message_list = disc_obj.groupdiscussionmessage_set.filter(is_active=True)
+            message_list = disc_obj.for_group.filter(is_active=True)
             displayable_discussions[i] = (disc_id, disc_obj, message_list)
         
         return displayable_discussions    
@@ -78,14 +83,14 @@ class Group(BaseModel):
         rs = [] # create an empty list that will hold the result set
         
         for gd in self.groupdiscussion_set.all():
-            irs = (gd,gd.groupdiscussionmessage_set.count())
+            irs = (gd,gd.for_group.count())
             # if you don't do this here, 
             # discussions with no messages wont be added
-            if gd.groupdiscussionmessage_set.exists() is False:
+            if gd.for_group.exists() is False:
                 #log.debug(gd.groupdiscussionmessage_set.count())
                 rs.append(irs) 
             
-            for gdm in gd.groupdiscussionmessage_set.all():
+            for gdm in gd.for_group.all():
                 irss = irs + (gdm,) # if messages found for a group
                 rs.append(irss) #append the result set to a list.
             
