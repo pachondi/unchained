@@ -1,22 +1,13 @@
 from django import forms
 from django.contrib.admin.sites import site
 from django.contrib.sites.models import Site
-
-from app.users.settings.models import UserSettings
-from app.users.models import SiteUser
-
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.utils.http import int_to_base36
 from django.template import Context, loader
-
-from django import forms
-from django.core.mail import send_mail
-
 from django.utils.datetime_safe import datetime
 from app.geography.models import State
 from app.users.models import SiteUser, UserProfile, Country, UserSettings
-
 
 class UserSettingsForm(forms.ModelForm):
     #is_activity_broadcast = forms.BooleanField(label="Turn on/off your activity broadcast")
@@ -25,7 +16,7 @@ class UserSettingsForm(forms.ModelForm):
     
     class Meta:
         model = UserSettings
-        fields = ['is_activity_broadcast','broadcast_level']
+        fields = ['is_activity_broadcast','broadcast_level','network_trace_level']
 
     def __init__(self, *args, **kwargs):        
         super(UserSettingsForm, self).__init__(*args, **kwargs)        
@@ -41,7 +32,20 @@ class UserSettingsForm(forms.ModelForm):
             
         return usersettings
             
+class UserProfileForm(forms.ModelForm):
+    #docfile = forms.ImageField(label='Choose your picture', help_text='max. 2 megabytes')    
 
+    class Meta:
+        model = UserProfile
+        fields = ['country','state','mobile']     
+        
+    def save(self,user):
+        user_profile = super(UserProfileForm, self).save(commit=False)
+        user_profile.user=user
+        user_profile.country = Country.objects.get(pk=self.data["country"])
+        user_profile.state = State.objects.get(pk=self.data["state"])
+        user_profile.save()
+        
 class UserCreationForm(forms.ModelForm):
     #username = forms.RegexField(label="Username", max_length=30, regex=r'^[\w.@+-]+$',
     #                            help_text="Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.",
@@ -111,7 +115,7 @@ class UserCreationForm(forms.ModelForm):
             
         if commit:
             user.save()
-            #user.create_settings()
+            user.create_settings()
             #user.add_to_network()
         if not domain_override:
             current_site = Site.objects.get_current()
