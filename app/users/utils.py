@@ -1,6 +1,5 @@
 from south.modelsinspector import timezone
 from app.users.models import SiteUser
-from app.relationships.models import ConnectionRequest
 
 
 def date_in_words(date):        
@@ -34,13 +33,3 @@ def date_in_words(date):
         if day_diff < 365:
             return str(day_diff/30) + " months ago"
         return str(day_diff/365) + " years ago"
-
-def get_connection_suggestion(user):        
-        connections = user.connections.all()
-        known_users = list()
-        
-        for u in SiteUser.objects.all():
-            if not connections.filter(pk=u).exists() and not ConnectionRequest.objects.filter(status='R',to_user=user, from_user=u).exists() and not ConnectionRequest.objects.filter(status='R',from_user=user, to_user=u).exists() and not u == user:               
-                known_users.append(u) 
-        
-        return known_users
