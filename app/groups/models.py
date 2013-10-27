@@ -1,15 +1,13 @@
 import logging
-<<<<<<< HEAD:app/groups/models.py
-=======
 from app.users.models import SiteUser
 log = logging.getLogger(__name__)
->>>>>>> master:app/groups/models.py
+
 from django.db import models
 from app.users.models import SiteUser
 from Pachondi.libs.discussions.models import Discussion
 from Pachondi.libs.message.models import Message
 from Pachondi.core.modelbase.models import BaseModel, SiteManager
-from cities_light.models import Country, Region
+#from cities_light.models import Country, Region
 from django.utils.translation import ugettext as _
 
 log = logging.getLogger(__name__)
@@ -31,8 +29,8 @@ class Group(BaseModel):
     auto_approve_domains=models.CharField(max_length=100) #domains seperated by semicolon(;)
     language=models.CharField(max_length=100)
     is_region_specific=models.BooleanField(default=False)
-    country=models.ForeignKey(Country)
-    region=models.ForeignKey(Region)
+    #country=models.ForeignKey(Country)
+    #region=models.ForeignKey(Region)
     _is_active = models.BooleanField(default=True)
     #is_twitter_announcement
     
