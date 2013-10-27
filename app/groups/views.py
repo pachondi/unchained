@@ -4,15 +4,18 @@ import logging
 from django.contrib.auth.decorators import login_required
 from app.users.models import SiteUser
 from django.template.context import RequestContext
+from app.groups.models import Group
+from app.groups.forms import GroupForm
 log = logging.getLogger(__name__)
 
 
-from app.groups.models import Group
-from app.groups.forms import GroupForm
+
 #from app.discussions.models import GroupDiscussion
 # from django.template import Context, loader
 from django.views.generic import DetailView
 from django.shortcuts import render_to_response, redirect, get_object_or_404
+
+log = logging.getLogger(__name__)
 #from django.http import HttpResponse
 
 # get a logging instance
@@ -47,7 +50,7 @@ def create_group(request):
 
 @login_required
 def show_all_group(request):    
-    group_list = Group.objects.filter(is_active=True)
+    group_list = Group.objects.filter(_is_active=True)
     user=get_object_or_404(SiteUser, id=request.user.id)
     
     return render_to_response(

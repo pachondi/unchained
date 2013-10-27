@@ -1,5 +1,9 @@
 from south.modelsinspector import timezone
+from app.users.models import SiteUser
+#from app.relationships.models import ConnectionRequest
+
 from app.users.models import ConnectionRequest, SiteUser
+
 
 def date_in_words(date):        
         now = timezone.now()
