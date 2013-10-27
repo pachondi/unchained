@@ -1,5 +1,5 @@
 # Create your views here.
-from discussions.models import Group, GroupDiscussion
+from app.groups.models import Group, GroupDiscussion
 from django.shortcuts import render_to_response, redirect
 # from django.template import RequestContext
 

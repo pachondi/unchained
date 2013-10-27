@@ -1,6 +1,6 @@
 from django.conf.urls import patterns
 
-urlpatterns = patterns('discussions.views',
+urlpatterns = patterns('Pachondi.libs.discussions.views',
                         (r'$','index'),
                         (r'new$','new',None,'new-group-discussion'),
                         (r'create/$','create'),

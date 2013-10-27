@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_DIR, '../pachondi_development'),                      # Or path to database file if using sqlite3.
+        'NAME': os.path.join(PROJECT_DIR, '../db/pachondi_development'),                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PORT': '',                      # Set to mpty string for default.
@@ -80,10 +80,11 @@ STATICFILES_DIRS = (
     # locations with an additional namespace, you can optionally provide a 
     # prefix as (prefix, path) tuples,
     
-    ("js",os.path.join(PROJECT_DIR, '../lib/static/js')),
+    ("js",os.path.join(PROJECT_DIR, '../static/js')),
 )
 
 IMAGE_UPLOAD_PATH='/static/'
+
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -115,6 +116,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'Pachondi.urls'
 
+AUTH_PROFILE_MODULE = 'profile.UserProfile'
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'Pachondi.wsgi.application'
 
@@ -124,8 +127,8 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     # M:\DOCS\GitRep\unchained\groups\templates\groups\form.html (django.template.loaders.app_directories.Loader)
     # os.path.join(PROJECT_DIR, '../<app>/templates'), -> loaded by file system loader for templates
-    os.path.join(PROJECT_DIR, '../groups/templates'),
-    os.path.join(PROJECT_DIR, '../templates'),
+    #os.path.join(PROJECT_DIR, '../groups/templates'),
+    #os.path.join(PROJECT_DIR, '../templates'),
     #"M:/DOCS/GitRep/unchained/groups/templates",
     
 )
@@ -138,14 +141,24 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # All user created apps
-    'groups',
-    'discussions',
-    'messages',
+    'Pachondi.core.modelbase',
+    #'Pachondi.core.models',
+    'Pachondi.libs.discussions',
+    'Pachondi.libs.message',    
+    'app.users',
+    'app.users.authentication',
+    'app.users.registration', 
+    'app.users.settings',
+    'app.users.posts', 
+    'app.groups',    
+    'app.relationships', 
+    'app.profile',
+    'app.profile.education', 
+    'app.profile.company',    
+    'cities_light',
+    #'relationships',   
     # South for database migrations
-    #'south',
-    #'relationships',
-    'users',
-    'geography',
+    #'south',    
     # Uncomment the next line to enable the admin:
     #'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -184,7 +197,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': PROJECT_DIR + "/logfiles",
+            'filename': PROJECT_DIR + "/log/logfiles",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -225,3 +238,8 @@ EMAIL_PORT = "587"
 EMAIL_HOST_USER = 'ram.be2005@gmail.com'
 EMAIL_HOST_PASSWORD = 'imbzotkavlqmgaua'
 EMAIL_USE_TLS = True
+
+
+AUTH_USER_MODEL = 'users.SiteUser'
+LOGIN_REDIRECT_URL = '/users/'
+LOGIN_URL = '/users/login'
